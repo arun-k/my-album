@@ -1,0 +1,52 @@
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <style>
+    
+    body{
+      background: #F0E68C url(/static/wood.jpg) repeat;
+    }
+
+    #album{
+      background: #202020;
+      margin: auto;
+      padding: 20px;
+      width: 70%;
+      height: auto;
+      border-top-left-radius:25px;
+      border-top-right-radius:25px;
+    }
+	
+	#reg{
+	  margin:auto;
+	  margin-top:30px;
+	  padding:20px;
+	  background:#DCDCDC;
+	  width:60%;
+	  height:auto;
+	  border:solid 2px;
+	  border-radius:25px;
+	}
+	
+	.reg_details{
+	  padding:20px;
+	  margin-top:5px;
+	  margin-right:auto;
+	  margin-left:auto;
+	}
+	
+	#register{
+	  margin-top:20px;
+	  height:30px;
+	  width:70px;
+	  border-radius:10px;
+	}
+  </style>
+</head>
+<body>
+  {% block content %}
+
+  {% endblock %}
+</body>
+</html>

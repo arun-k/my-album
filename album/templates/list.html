@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}album{% endblock %}
+
+{% block content %}
+  <div style="position:absolute;right:200px">
+    <a href="/logout/">Logout</a>
+  </div>
+  <h1>Welcome {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+  <div id="album">
+  {% if images %}
+    <center><h2 style="color:#ffffff"><big><i>Your Album</i></big></h2></center>
+    <hr />
+    <center>
+    {% for image in images %}
+
+      <a href="{{ image.imgfile.url }}"><img border="2px" src='{{ image.imgfile.url }}' alt="{{ image.imgfile.name}}" width="auto" height="150"></a>
+
+    {% endfor %}
+    </center>
+  {% else %}
+    <center><h2 style="color:#ffffff"><big><i>No Photos Yet!!!</i></big></h2></center>
+  {% endif %}
+  </div>
+
+  <form action="/album/" method="post" enctype="multipart/form-data">
+    <p>{{ form.non_field_errors }}</p>
+    <h3>{{ form.imgfile.label_tag }}</h3>
+    <p>
+      {{ form.imgfile.errors }}
+      {{ form.imgfile }}
+    </p>
+    <input type="submit" value="Upload" />
+  </form>
+		
+{% endblock %}

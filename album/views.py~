@@ -1,0 +1,61 @@
+# Create your views here.
+
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.http import HttpResponseRedirect,HttpResponse
+from django.core.urlresolvers import reverse
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
+
+from album.models import Image
+from album.forms import ImageForm
+
+#userlogin
+def userlogin(request):
+    if request.method=='GET':
+        return render_to_response('home.html')
+    if request.method=='POST':
+        usrname=request.POST['usrname']
+        passwrd=request.POST['passwrd']
+        user=authenticate(username=usrname,password=passwrd)
+        if user is not None and user.is_active:
+            login(request,user)
+            return HttpResponse('/user/%s'%usrname)
+        else:
+            return HttpResponse("Invalid user!!!")
+
+#register user
+def register(request):
+    if request.method=='GET':
+        return render_to_response('register.html')
+    if request.method=='POST':
+        new_usrname=request.POST['usrname']
+        new_email=request.POST['email']
+        new_passwrd=request.POST['passwrd']
+        firstname=request.POST['firstname']
+        lastname=request.POST['lastname']
+        user=User.objects.create_user(username=new_usrname,email=new_email,password=new_passwrd)
+        user.first_name=firstname
+        user.last_name=lastname
+        user.save()
+        return HttpResponse('/')
+
+#form
+def img_list(request,username):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            newimg = Image(imgfile = request.FILES['imgfile'],username=username)
+            newimg.save()
+            return HttpResponseRedirect('/user/%s'%username)
+    else:
+        form = ImageForm()
+        imgs = Image.objects.filter(username=username)
+        user=User.objects.get(username=username)
+        return render_to_response('list.html',{'images': imgs,'user':user,'form': form},context_instance=RequestContext(request))
+
+#logout
+def usrlogout(request):
+    logout(request)
+    return HttpResponseRedirect("/")
+
